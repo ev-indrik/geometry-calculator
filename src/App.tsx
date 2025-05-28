@@ -1,5 +1,9 @@
-import './App.css'
-import {Col, Divider, Row} from "antd";
+import './App.scss'
+import {Row} from "antd";
+
+import CalculatingSection from "./components/CalculatingSection.tsx";
+import ResultSection from "./components/ResultSection.tsx";
+
 
 function App() {
 
@@ -7,36 +11,10 @@ function App() {
         <div className={'calc-wrapper'}>
             <div className={'container'}>
 
-                <Row
-                    justify={'center'}
-                >
-                    <Col
-                        span={16}
-                        className={'calculation-box'}
-                    >
-                        <Row justify={'center'}>
-                            <Col>
-                                <h1>{'Geometry calculator'}</h1>
-                            </Col>
-                            <Divider className={'divider'} />
-                        </Row>
-                    </Col>
-
-                    {/*Cards section*/}
-                    <Col
-                        className={'cards-section'}
-                        span={7}
-                        offset={1}
-                    >
-                        <Row justify={'center'}>
-                            <Col>
-                                <h2>{'My results'}</h2>
-                            </Col>
-                            <Divider className={'divider'} />
-                        </Row>
-                    </Col>
+                <Row justify={'center'}>
+                    <CalculatingSection/>
+                    <ResultSection/>
                 </Row>
-
             </div>
         </div>
     )
