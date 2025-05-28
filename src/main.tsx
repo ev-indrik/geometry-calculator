@@ -3,10 +3,10 @@ import { createRoot } from 'react-dom/client'
 import './index.scss'
 import  './ant-styles.scss'
 import 'antd/dist/reset.css';
-import App from './App.tsx'
+import AppLayout from './components/app-layout/AppLayout.tsx'
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
-    <App />
+    <AppLayout />
   </StrictMode>,
 )
