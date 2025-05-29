@@ -21,11 +21,17 @@ type GeometryShapesProps = {
     img: string;
 }
 
+type Point = {
+    x: number;
+    y: number;
+};
+
 type FormValues = {
     side: number;
     sideA: number;
     sideB: number;
     radius: number;
+    points: [Point, Point];
 }
 
 const geometryShapes: GeometryShapesProps[] = [
@@ -66,8 +72,18 @@ const CalculatingSection: FC = () => {
         setCurrentDate(moment().toISOString())
 
         if (activeSelectorId === 1) {
-            areaNumber = values.side * 2
-            perimeterNumber = values.side * 4
+
+            if (values.side) {
+                areaNumber = Math.pow(values.side, 2)
+                perimeterNumber = values.side * 4
+            } else if (values.points?.length === 2) {
+                const [p1, p2] = values.points
+                const dx = p2.x - p1.x
+                const dy = p2.y - p1.y
+                const side = Math.sqrt(dx * dx + dy * dy)
+                areaNumber = side * side
+                perimeterNumber = side * 4
+            }
         }
 
         if (activeSelectorId === 2) {
@@ -91,7 +107,6 @@ const CalculatingSection: FC = () => {
             timeStamp: moment().toISOString(),
             uuid: uuidv4(),
         }
-
         setResultItem(resultItem)
     }
 
