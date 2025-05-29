@@ -27,7 +27,7 @@ const ResultSection: FC = () => {
                <Space direction={'vertical'} style={{width: '100%', marginTop: 24}}>
                    {calculationResults.map((it) => (
                        <CardItem
-                           key={it.geometryId}
+                           key={it.uuid}
                            geometryTypeId={it.geometryId}
                            areaResult={it.area}
                            perimeterResult={it.perimeter}

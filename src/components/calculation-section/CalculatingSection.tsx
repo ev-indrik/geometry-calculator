@@ -1,5 +1,6 @@
 import {type FC, useState} from 'react';
 import {Button, Col, Divider, Form, Input, Row, Space, Typography} from "antd";
+import { v4 as uuidv4 } from 'uuid';
 
 import './CalculatingSection.scss'
 
@@ -87,7 +88,8 @@ const CalculatingSection: FC = () => {
             geometryId: activeSelectorId,
             area: areaNumber,
             perimeter: perimeterNumber,
-            timeStamp: moment().toISOString()
+            timeStamp: moment().toISOString(),
+            uuid: uuidv4(),
         }
 
         setResultItem(resultItem)

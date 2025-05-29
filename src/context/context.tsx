@@ -5,6 +5,7 @@ export type ResultItem = {
     area: number,
     perimeter: number,
     timeStamp: string,
+    uuid: string,
 }
 
 type ContextValuesType = {
