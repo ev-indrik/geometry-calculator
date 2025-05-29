@@ -1,5 +1,5 @@
 import {type FC, useState} from 'react';
-import {Button, Col, Form, Input, Row, Space, Typography} from "antd";
+import {Button, Col, Divider, Form, Input, Row, Space, Typography} from "antd";
 
 import './CalculatingSection.scss'
 
@@ -11,7 +11,7 @@ import {useForm} from "antd/es/form/Form";
 import moment from "moment";
 import {type ResultItem, useGeneralContext} from "../../context/context.tsx";
 
-const {Title, Paragraph} = Typography;
+const {Paragraph} = Typography;
 
 
 type GeometryShapesProps = {
@@ -51,35 +51,42 @@ const CalculatingSection: FC = () => {
 
     const [form] = useForm()
 
-    const [activeSelectorId, setActiveSelectorId] = useState(1)
+    const [activeSelectorId, setActiveSelectorId] = useState(2)
     const [areaResult, setAreaResult] = useState<number>(0)
+    const [perimeterResult, setPerimeterResult] = useState<number>(0)
     const [currentDate, setCurrentDate] = useState('')
     const [resultItem, setResultItem] = useState<ResultItem | null>(null)
 
     const onFinish = (values: FormValues) => {
 
         let areaNumber = 0
+        let perimeterNumber = 0
 
         setCurrentDate(moment().toISOString())
 
         if (activeSelectorId === 1) {
             areaNumber = values.side * 2
+            perimeterNumber = values.side * 4
         }
 
         if (activeSelectorId === 2) {
             areaNumber = values.sideA * values.sideB
+            perimeterNumber = (values.sideA * values.sideB) * 2
         }
 
         if (activeSelectorId === 3) {
             const area = Math.PI * Math.pow(values.radius, 2)
             areaNumber = Math.round(area)
+            perimeterNumber = Math.round(2 * Math.PI * values.radius)
         }
 
         setAreaResult(areaNumber)
+        setPerimeterResult(perimeterNumber)
 
         const resultItem: ResultItem = {
             geometryId: activeSelectorId,
             area: areaNumber,
+            perimeter: perimeterNumber,
             timeStamp: moment().toISOString()
         }
 
@@ -124,10 +131,10 @@ const CalculatingSection: FC = () => {
 
                     <Col span={24}>
                         <Row justify={'center'}>
-                            <Col>
-                                <Title level={3} type={'success'}>
-                                    {'*Select Geometry type'}
-                                </Title>
+                            <Col span={24}>
+                                <Divider plain style={{borderColor: '#E84D4B'}}>
+                                    <p className={'divider-text'}>{'Select Geometry type'}</p>
+                                </Divider>
                             </Col>
                         </Row>
                     </Col>
@@ -154,11 +161,43 @@ const CalculatingSection: FC = () => {
                         ))}
                     </Row>
 
-                    <Form form={form} layout={'vertical'} onFinish={onFinish} style={{paddingBottom: 12}}>
+                    <Form form={form} layout={'vertical'} onFinish={onFinish}
+                          style={{paddingBottom: 12, paddingTop: 12}}>
                         {activeSelectorId === 1 && (
-                            <Form.Item label={'Square side'} name={'side'}>
-                                <Input type={'number'} placeholder={'Enter square side'}/>
-                            </Form.Item>
+                            <>
+                                <Form.Item label={'Square side'} name={'side'}>
+                                    <Input type={'number'} placeholder={'Enter square side'}/>
+                                </Form.Item>
+
+                                <Divider plain style={{borderColor: '#E84D4B'}}>
+                                    <p className={'divider-text'}>{'Or put the coordinates'}</p>
+                                </Divider>
+                                <Row gutter={12}>
+                                    <Col span={12}>
+                                        <Form.Item label={'Point X'} name={['points', 0, 'x']}>
+                                            <Input type={'number'} placeholder={'X coordinate'}/>
+                                        </Form.Item>
+                                    </Col>
+                                    <Col span={12}>
+                                        <Form.Item label={'Point Y'} name={['points', 0, 'y']}>
+                                            <Input type={'number'} placeholder={'Y coordinate'}/>
+                                        </Form.Item>
+                                    </Col>
+                                </Row>
+
+                                <Row gutter={12}>
+                                    <Col span={12}>
+                                        <Form.Item label={'Point X'} name={['points', 1, 'x']}>
+                                            <Input type={'number'} placeholder={'X coordinate'}/>
+                                        </Form.Item>
+                                    </Col>
+                                    <Col span={12}>
+                                        <Form.Item label={'Point Y'} name={['points', 1, 'y']}>
+                                            <Input type={'number'} placeholder={'Y coordinate'}/>
+                                        </Form.Item>
+                                    </Col>
+                                </Row>
+                            </>
                         )}
 
                         {activeSelectorId === 2 && (
@@ -179,8 +218,12 @@ const CalculatingSection: FC = () => {
                         )}
 
                         {areaResult ?
-                            <CardItem areaResult={areaResult} geometryTypeId={activeSelectorId}
-                                      timeStamp={currentDate}/> : null
+                            <CardItem
+                                areaResult={areaResult}
+                                perimeterResult={perimeterResult}
+                                geometryTypeId={activeSelectorId}
+                                timeStamp={currentDate}
+                            /> : null
                         }
 
                         <Row style={{paddingTop: 24}}>

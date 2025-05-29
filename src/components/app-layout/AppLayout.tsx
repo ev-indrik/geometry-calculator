@@ -17,9 +17,9 @@ function AppLayout() {
                 calculationResults,
                 setCalculationResults
             }}>
-            <div className={'calc-wrapper'}>
+            <div className={'app-wrapper'}>
                 <div className={'container'}>
-                    <Row justify={'center'}>
+                    <Row justify={'center'} className={'calc-wrapper'}>
                         <CalculatingSection/>
                         <ResultSection/>
                     </Row>

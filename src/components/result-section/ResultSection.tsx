@@ -30,6 +30,7 @@ const ResultSection: FC = () => {
                            key={it.geometryId}
                            geometryTypeId={it.geometryId}
                            areaResult={it.area}
+                           perimeterResult={it.perimeter}
                            timeStamp={it.timeStamp}
                        />
                    ))}

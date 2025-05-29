@@ -3,6 +3,7 @@ import {createContext, type Dispatch, type SetStateAction, useContext} from "rea
 export type ResultItem = {
     geometryId: number,
     area: number,
+    perimeter: number,
     timeStamp: string,
 }
 
