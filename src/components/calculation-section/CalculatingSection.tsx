@@ -11,7 +11,7 @@ import CardItem from "../card-item/CardItem.tsx";
 import {useForm} from "antd/es/form/Form";
 import moment from "moment";
 import {type ResultItem, useGeneralContext} from "../../context/context.tsx";
-import {calculateSquareByPoints} from "../../utils/geometry.ts";
+import {calculateRectangleByPoints, calculateSquareByPoints} from "../../utils/coords-geometry.ts";
 
 const {Paragraph} = Typography;
 
@@ -68,11 +68,14 @@ const CalculatingSection: FC = () => {
     const [currentDate, setCurrentDate] = useState('')
     const [resultItem, setResultItem] = useState<ResultItem | null>(null)
 
-    const openNotificationWithIcon = (type: NotificationType) => {
+    const openNotificationWithIcon = (
+        type: NotificationType,
+        message: string,
+        description: string
+    ) => {
         api[type]({
-            message: 'Wrong coordinates',
-            description:
-                'Points must be aligned horizontally or vertically to form a square side',
+            message,
+            description,
         });
     };
 
@@ -94,7 +97,11 @@ const CalculatingSection: FC = () => {
 
                 const isValidLine = p1.x === p2.x || p1.y === p2.y
                 if (!isValidLine) {
-                    openNotificationWithIcon('warning')
+                    openNotificationWithIcon(
+                        'warning',
+                        'Wrong coordinates',
+                        'Points must be diagonal to form a rectangle'
+                    )
                     return
                 }
                 const {area, perimeter} = calculateSquareByPoints(values.points)
@@ -104,8 +111,29 @@ const CalculatingSection: FC = () => {
         }
 
         if (activeSelectorId === 2) {
-            areaNumber = values.sideA * values.sideB
-            perimeterNumber = (values.sideA * values.sideB) * 2
+            if (values.sideA && values.sideB) {
+
+                const a = Number(values.sideA )
+                const b = Number(values.sideB )
+                areaNumber = a * b
+                perimeterNumber = 2 * (a + b)
+            } else if (values.points?.length === 2) {
+                const [p1, p2] = values.points
+
+                const isDiagonal = p1.x !== p2.x && p1.y !== p2.y
+                if (!isDiagonal) {
+                    openNotificationWithIcon(
+                        'warning',
+                        'Wrong coordinates',
+                        'Points must form a diagonal of a rectangle'
+                    )
+                    return
+                }
+
+                const { area, perimeter } = calculateRectangleByPoints(values.points)
+                areaNumber = area
+                perimeterNumber = perimeter
+            }
         }
 
         if (activeSelectorId === 3) {
@@ -246,6 +274,32 @@ const CalculatingSection: FC = () => {
                                     <Form.Item label={'Side B'} name={'sideB'}>
                                         <Input type={'number'} placeholder={'Enter rectangular second side'}/>
                                     </Form.Item>
+
+                                    <Divider plain style={{borderColor: '#E84D4B'}}>
+                                        <p className={'divider-text'}>{'Or put the coordinates'}</p>
+                                    </Divider>
+                                    <Row gutter={12}>
+                                        <Col span={6}>
+                                            <Form.Item label="X₁" name={['points', 0, 'x']}>
+                                                <Input type="number" placeholder="X₁"/>
+                                            </Form.Item>
+                                        </Col>
+                                        <Col span={6}>
+                                            <Form.Item label="Y₁" name={['points', 0, 'y']}>
+                                                <Input type="number" placeholder="Y₁"/>
+                                            </Form.Item>
+                                        </Col>
+                                        <Col span={6}>
+                                            <Form.Item label="X₂" name={['points', 1, 'x']}>
+                                                <Input type="number" placeholder="X₂"/>
+                                            </Form.Item>
+                                        </Col>
+                                        <Col span={6}>
+                                            <Form.Item label="Y₂" name={['points', 1, 'y']}>
+                                                <Input type="number" placeholder="Y₂"/>
+                                            </Form.Item>
+                                        </Col>
+                                    </Row>
                                 </>
                             )}
 

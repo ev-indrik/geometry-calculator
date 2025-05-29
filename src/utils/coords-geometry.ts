@@ -14,3 +14,20 @@ export const calculateSquareByPoints = (points: Point[]): { area: number; perime
 
     return { area, perimeter }
 }
+
+export const calculateRectangleByPoints = (
+    points: Point[]
+): { area: number; perimeter: number } => {
+    if (points.length !== 2) {
+        return { area: 0, perimeter: 0 }
+    }
+
+    const [p1, p2] = points
+    const width = Math.abs(p2.x - p1.x)
+    const height = Math.abs(p2.y - p1.y)
+
+    const area = width * height
+    const perimeter = 2 * (width + height)
+
+    return { area, perimeter }
+}
