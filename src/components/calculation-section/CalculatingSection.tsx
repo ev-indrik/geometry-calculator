@@ -16,7 +16,6 @@ import {
     calculateRectangleByPoints,
     calculateSquareByPoints
 } from "../../utils/coords-geometry.ts";
-import {isValidNumber} from "../../utils/number-validation.ts";
 
 const {Paragraph} = Typography;
 
@@ -166,6 +165,7 @@ const CalculatingSection: FC = () => {
         }
 
         if (activeSelectorId === 3) {
+
             if (values.radius) {
                 const r = Number(values.radius);
                 if (r <= 0) {
@@ -186,10 +186,10 @@ const CalculatingSection: FC = () => {
             } else if (
                 values.center &&
                 values.edgePoint &&
-                isValidNumber(values.center.x) &&
-                isValidNumber(values.center.y) &&
-                isValidNumber(values.edgePoint.x) &&
-                isValidNumber(values.edgePoint.y)
+                values.center.x &&
+                values.center.y &&
+                values.edgePoint.x &&
+                values.edgePoint.y
             ) {
                 const {x: cx, y: cy} = values.center;
                 const {x: px, y: py} = values.edgePoint;
