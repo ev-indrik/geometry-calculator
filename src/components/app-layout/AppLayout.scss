@@ -1,4 +1,4 @@
-.calc-wrapper {
+.app-wrapper {
     height: 100vh;
     width: 100%;
     display: flex;
@@ -12,7 +12,11 @@
     .container {
         width: 80vw;
         height: 100%;
-        padding: 64px 0 64px;
+        padding: 24px 0;
+
+        .calc-wrapper {
+            height: 100%;
+        }
 
         .header-box {
             padding: 0 42px 0;
@@ -33,16 +37,20 @@
     h1 {
         color: #E84D4B;
         font-weight: 700;
-        font-size: 42px;
+        font-size: 38px;
         margin: 0;
         padding: 0;
     }
 
     h2 {
-        color: #FFFFFF;
+        color: beige;
         font-weight: 700;
         font-size: 26px;
         margin: 10px 0 10px;
+    }
+
+    p {
+        margin: 0;
     }
 }
 

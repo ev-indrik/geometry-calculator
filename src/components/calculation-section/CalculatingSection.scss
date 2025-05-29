@@ -15,6 +15,7 @@
     .geometry-selector-img {
       width: 34px;
       height: 34px;
+      margin-top: 10px;
 
       img {
         width: 100%;
@@ -22,5 +23,11 @@
         object-fit: contain;
       }
     }
+  }
+
+  .divider-text {
+    margin: 0;
+    font-weight: 600;
+    color: beige;
   }
 }

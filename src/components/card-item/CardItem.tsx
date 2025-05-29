@@ -9,11 +9,12 @@ import circleImg from "../../../public/shapes/circle.svg";
 
 type Props = {
     areaResult: number,
+    perimeterResult: number,
     geometryTypeId: number,
     timeStamp: string,
 }
 
-const CardItem: FC<Props> = ({areaResult, geometryTypeId, timeStamp}) => {
+const CardItem: FC<Props> = ({areaResult, perimeterResult, geometryTypeId, timeStamp}) => {
 
     const formattedData = moment(timeStamp).local().format('MMM DD, HH:mm:ss');
 
@@ -46,7 +47,7 @@ const CardItem: FC<Props> = ({areaResult, geometryTypeId, timeStamp}) => {
                     {cardName}
                 </div>
                 <div className={'result-text'}>
-                    {`Area: ${areaResult}²`}
+                    <p>{`Area: ${areaResult}² / Perimeter: ${perimeterResult}`}</p>
                 </div>
                 <div className={'time-stamp'}>
                     {`Date: ${formattedData}`}
