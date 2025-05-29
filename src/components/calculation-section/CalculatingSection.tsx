@@ -11,7 +11,12 @@ import CardItem from "../card-item/CardItem.tsx";
 import {useForm} from "antd/es/form/Form";
 import moment from "moment";
 import {type ResultItem, useGeneralContext} from "../../context/context.tsx";
-import {calculateRectangleByPoints, calculateSquareByPoints} from "../../utils/coords-geometry.ts";
+import {
+    calculateCircleByPoints,
+    calculateRectangleByPoints,
+    calculateSquareByPoints
+} from "../../utils/coords-geometry.ts";
+import {isValidNumber} from "../../utils/number-validation.ts";
 
 const {Paragraph} = Typography;
 
@@ -28,11 +33,14 @@ type Point = {
 };
 
 type FormValues = {
-    side: number;
-    sideA: number;
-    sideB: number;
-    radius: number;
-    points: [Point, Point];
+    side?: number;
+    sideA?: number;
+    sideB?: number;
+    radius?: number;
+    point1: Point;
+    point2: Point;
+    center?: Point;
+    edgePoint?: Point;
 }
 
 type NotificationType = 'success' | 'info' | 'warning' | 'error';
@@ -91,20 +99,30 @@ const CalculatingSection: FC = () => {
             if (values.side) {
                 areaNumber = Math.pow(values.side, 2)
                 perimeterNumber = values.side * 4
-            } else if (values.points?.length === 2) {
+            } else if (!values?.point1?.y || !values?.point1?.x || !values?.point2?.x || !values?.point2?.x)
+            {
+                openNotificationWithIcon(
+                    'warning',
+                    'Wrong coordinates',
+                    "Please insert the correct coordinates or side"
+                )
+                return
+            } else {
+                const p1 = values.point1
+                const p2 = values.point2
 
-                const [p1, p2] = values.points
+                const points = [p1, p2]
 
                 const isValidLine = p1.x === p2.x || p1.y === p2.y
                 if (!isValidLine) {
                     openNotificationWithIcon(
                         'warning',
                         'Wrong coordinates',
-                        'Points must be diagonal to form a rectangle'
+                        "Points must be aligned horizontally or vertically to form a square side"
                     )
                     return
                 }
-                const {area, perimeter} = calculateSquareByPoints(values.points)
+                const {area, perimeter} = calculateSquareByPoints(points)
                 areaNumber = area
                 perimeterNumber = perimeter
             }
@@ -113,12 +131,23 @@ const CalculatingSection: FC = () => {
         if (activeSelectorId === 2) {
             if (values.sideA && values.sideB) {
 
-                const a = Number(values.sideA )
-                const b = Number(values.sideB )
+                const a = Number(values.sideA)
+                const b = Number(values.sideB)
                 areaNumber = a * b
                 perimeterNumber = 2 * (a + b)
-            } else if (values.points?.length === 2) {
-                const [p1, p2] = values.points
+            } else if (!values?.point1?.y || !values?.point1?.x || !values?.point2?.x || !values?.point2?.x)
+            {
+                openNotificationWithIcon(
+                    'warning',
+                    'Wrong coordinates',
+                    "Please insert the correct coordinates or sides"
+                )
+                return
+            } else {
+                const p1 = values.point1
+                const p2 = values.point2
+
+                const points = [p1, p2]
 
                 const isDiagonal = p1.x !== p2.x && p1.y !== p2.y
                 if (!isDiagonal) {
@@ -130,16 +159,66 @@ const CalculatingSection: FC = () => {
                     return
                 }
 
-                const { area, perimeter } = calculateRectangleByPoints(values.points)
+                const {area, perimeter} = calculateRectangleByPoints(points)
                 areaNumber = area
                 perimeterNumber = perimeter
             }
         }
 
         if (activeSelectorId === 3) {
-            const area = Math.PI * Math.pow(values.radius, 2)
-            areaNumber = Math.round(area)
-            perimeterNumber = Math.round(2 * Math.PI * values.radius)
+            if (values.radius) {
+                const r = Number(values.radius);
+                if (r <= 0) {
+                    openNotificationWithIcon(
+                        'warning',
+                        'Wrong radius',
+                        'Radius must be a positive number'
+                    );
+                    return;
+                }
+                areaNumber = Math.round(Math.PI * r * r);
+                perimeterNumber = Math.round(2 * Math.PI * r);
+                openNotificationWithIcon(
+                    'success',
+                    'Calculation successful',
+                    'Note: The circle calculation results are rounded to the nearest whole number'
+                );
+            } else if (
+                values.center &&
+                values.edgePoint &&
+                isValidNumber(values.center.x) &&
+                isValidNumber(values.center.y) &&
+                isValidNumber(values.edgePoint.x) &&
+                isValidNumber(values.edgePoint.y)
+            ) {
+                const {x: cx, y: cy} = values.center;
+                const {x: px, y: py} = values.edgePoint;
+
+                if (cx === px && cy === py) {
+                    openNotificationWithIcon(
+                        'warning',
+                        'Wrong coordinates',
+                        'Center and point must not be the same'
+                    );
+                    return;
+                }
+
+                const {area, perimeter} = calculateCircleByPoints(values.center, values.edgePoint);
+                areaNumber = Math.round(area);
+                perimeterNumber = Math.round(perimeter);
+                openNotificationWithIcon(
+                    'success',
+                    'Calculation successful',
+                    'Note: The circle calculation results are rounded to the nearest whole number'
+                );
+            } else {
+                openNotificationWithIcon(
+                    'warning',
+                    'Missing data',
+                    'Please provide valid center and edge point coordinates, or use the radius instead'
+                );
+                return;
+            }
         }
 
         setAreaResult(areaNumber)
@@ -240,12 +319,12 @@ const CalculatingSection: FC = () => {
                                     </Divider>
                                     <Row gutter={12}>
                                         <Col span={12}>
-                                            <Form.Item label={'Point X'} name={['points', 0, 'x']}>
+                                            <Form.Item label={'Point X'} name={['point1', 'x']}>
                                                 <Input type={'number'} placeholder={'X coordinate'}/>
                                             </Form.Item>
                                         </Col>
                                         <Col span={12}>
-                                            <Form.Item label={'Point Y'} name={['points', 0, 'y']}>
+                                            <Form.Item label={'Point Y'} name={['point1', 'y']}>
                                                 <Input type={'number'} placeholder={'Y coordinate'}/>
                                             </Form.Item>
                                         </Col>
@@ -253,12 +332,12 @@ const CalculatingSection: FC = () => {
 
                                     <Row gutter={12}>
                                         <Col span={12}>
-                                            <Form.Item label={'Point X'} name={['points', 1, 'x']}>
+                                            <Form.Item label={'Point X'} name={['point2', 'x']}>
                                                 <Input type={'number'} placeholder={'X coordinate'}/>
                                             </Form.Item>
                                         </Col>
                                         <Col span={12}>
-                                            <Form.Item label={'Point Y'} name={['points', 1, 'y']}>
+                                            <Form.Item label={'Point Y'} name={['point2', 'y']}>
                                                 <Input type={'number'} placeholder={'Y coordinate'}/>
                                             </Form.Item>
                                         </Col>
@@ -280,22 +359,22 @@ const CalculatingSection: FC = () => {
                                     </Divider>
                                     <Row gutter={12}>
                                         <Col span={6}>
-                                            <Form.Item label="X₁" name={['points', 0, 'x']}>
+                                            <Form.Item label="X₁" name={['point1', 'x']}>
                                                 <Input type="number" placeholder="X₁"/>
                                             </Form.Item>
                                         </Col>
                                         <Col span={6}>
-                                            <Form.Item label="Y₁" name={['points', 0, 'y']}>
+                                            <Form.Item label="Y₁" name={['point1', 'y']}>
                                                 <Input type="number" placeholder="Y₁"/>
                                             </Form.Item>
                                         </Col>
                                         <Col span={6}>
-                                            <Form.Item label="X₂" name={['points', 1, 'x']}>
+                                            <Form.Item label="X₂" name={['point2', 'x']}>
                                                 <Input type="number" placeholder="X₂"/>
                                             </Form.Item>
                                         </Col>
                                         <Col span={6}>
-                                            <Form.Item label="Y₂" name={['points', 1, 'y']}>
+                                            <Form.Item label="Y₂" name={['point2', 'y']}>
                                                 <Input type="number" placeholder="Y₂"/>
                                             </Form.Item>
                                         </Col>
@@ -304,9 +383,38 @@ const CalculatingSection: FC = () => {
                             )}
 
                             {activeSelectorId === 3 && (
-                                <Form.Item label={'Circle radius'} name={'radius'}>
-                                    <Input type={'number'} placeholder={'Enter radius here'}/>
-                                </Form.Item>
+                                <>
+                                    <Form.Item label={'Circle radius'} name={'radius'}>
+                                        <Input type={'number'} placeholder={'Enter radius here'}/>
+                                    </Form.Item>
+
+                                    <Divider plain style={{borderColor: '#E84D4B'}}>
+                                        <p className="divider-text">Or enter center & edge coordinates</p>
+                                    </Divider>
+
+                                    <Row gutter={12}>
+                                        <Col span={6}>
+                                            <Form.Item label="Center X" name={['center', 'x']}>
+                                                <Input type="number" placeholder="X"/>
+                                            </Form.Item>
+                                        </Col>
+                                        <Col span={6}>
+                                            <Form.Item label="Center Y" name={['center', 'y']}>
+                                                <Input type="number" placeholder="Y"/>
+                                            </Form.Item>
+                                        </Col>
+                                        <Col span={6}>
+                                            <Form.Item label="Point X" name={['edgePoint', 'x']}>
+                                                <Input type="number" placeholder="X"/>
+                                            </Form.Item>
+                                        </Col>
+                                        <Col span={6}>
+                                            <Form.Item label="Point Y" name={['edgePoint', 'y']}>
+                                                <Input type="number" placeholder="Y"/>
+                                            </Form.Item>
+                                        </Col>
+                                    </Row>
+                                </>
                             )}
 
                             {resultItem ?

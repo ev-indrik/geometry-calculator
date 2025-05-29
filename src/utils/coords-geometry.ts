@@ -31,3 +31,20 @@ export const calculateRectangleByPoints = (
 
     return { area, perimeter }
 }
+
+export const calculateCircleByPoints = (
+    center: Point,
+    point: Point
+): { area: number; perimeter: number } => {
+    const dx = point.x - center.x
+    const dy = point.y - center.y
+    const radius = Math.sqrt(dx * dx + dy * dy)
+
+    const area = Math.PI * radius * radius
+    const perimeter = 2 * Math.PI * radius
+
+    return {
+        area: Math.round(area),
+        perimeter: Math.round(perimeter),
+    }
+}

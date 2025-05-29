@@ -1,0 +1,1 @@
+export const isValidNumber = (n: unknown): n is number => typeof n === 'number' && !isNaN(n);
