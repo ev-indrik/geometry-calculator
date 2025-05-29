@@ -6,15 +6,22 @@ import moment from 'moment';
 import squareImg from "../../../public/shapes/square.svg";
 import rectangleImg from "../../../public/shapes/rectangle.svg";
 import circleImg from "../../../public/shapes/circle.svg";
+import closeImg from '../../../public/x.svg'
+import {Button} from "antd";
+import {useGeneralContext} from '../../context/context';
 
 type Props = {
     areaResult: number,
     perimeterResult: number,
     geometryTypeId: number,
     timeStamp: string,
+    uuid?: string
+    isClosable?: boolean,
 }
 
-const CardItem: FC<Props> = ({areaResult, perimeterResult, geometryTypeId, timeStamp}) => {
+const CardItem: FC<Props> = ({areaResult, perimeterResult, geometryTypeId, timeStamp, uuid, isClosable = true}) => {
+
+    const {setCalculationResults, calculationResults} = useGeneralContext()
 
     const formattedData = moment(timeStamp).local().format('MMM DD, HH:mm:ss');
 
@@ -22,23 +29,39 @@ const CardItem: FC<Props> = ({areaResult, perimeterResult, geometryTypeId, timeS
     let cardName = ''
 
     switch (geometryTypeId) {
-        case 1: geometryImageUrl=squareImg
-            cardName='Square'
+        case 1:
+            geometryImageUrl = squareImg
+            cardName = 'Square'
             break
 
-        case 2: geometryImageUrl=rectangleImg
-            cardName='Rectangle'
+        case 2:
+            geometryImageUrl = rectangleImg
+            cardName = 'Rectangle'
             break
 
-        case 3: geometryImageUrl=circleImg
-            cardName='Circle'
+        case 3:
+            geometryImageUrl = circleImg
+            cardName = 'Circle'
             break
 
-        default: geometryImageUrl=squareImg
+        default:
+            geometryImageUrl = squareImg
+    }
+
+    const handleClose = () => {
+        const newCalculationResults = calculationResults.filter(it => it.uuid !== uuid)
+        setCalculationResults(newCalculationResults)
     }
 
     return (
         <div className={'card-item'}>
+
+            {isClosable && (
+                <Button type={'text'} className={'close-button'} onClick={handleClose}>
+                    <img src={closeImg} alt={'closing icon'}/>
+                </Button>)
+            }
+
             <div className={'card-img-wrapper'}>
                 <img src={geometryImageUrl} alt={`illustration of ${cardName}`}/>
             </div>
