@@ -130,7 +130,9 @@ const CalculatingSection: FC = () => {
     const handleSelector = (id: number) => {
         setActiveSelectorId(id)
         setAreaResult(0)
+        setPerimeterResult(0)
         form.resetFields()
+        setResultItem(null)
     }
 
     const handleReset = () => {
@@ -259,6 +261,7 @@ const CalculatingSection: FC = () => {
                                     perimeterResult={perimeterResult}
                                     geometryTypeId={activeSelectorId}
                                     timeStamp={currentDate}
+                                    isClosable={false}
                                 /> : null
                             }
 

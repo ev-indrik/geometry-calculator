@@ -12,8 +12,7 @@ const ResultSection: FC = () => {
     return (
         <Col
             className={'cards-section common-panel'}
-            span={7}
-            offset={1}
+            // span={8}
         >
             <Row justify={'center'}>
                 <Col>
@@ -32,6 +31,7 @@ const ResultSection: FC = () => {
                            areaResult={it.area}
                            perimeterResult={it.perimeter}
                            timeStamp={it.timeStamp}
+                           uuid={it.uuid}
                        />
                    ))}
                </Space>
