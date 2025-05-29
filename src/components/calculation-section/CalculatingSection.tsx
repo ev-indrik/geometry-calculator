@@ -452,6 +452,7 @@ const CalculatingSection: FC = () => {
                                 type={'default'}
                                 block
                                 onClick={handleReset}
+                                disabled={!calculationResults.length}
                             >
                                 {'Clean results'}
                             </Button>

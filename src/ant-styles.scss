@@ -7,8 +7,42 @@
       padding: 0 !important;
 
       label {
-        color: #FFFFFF;
+        color: beige;
       }
     }
   }
 }
+
+.ant-btn {
+
+  &.ant-btn-color-primary {
+    background-color: #E84D4B !important;
+
+    &:hover {
+      background: #bb3c3b !important;
+    }
+  }
+
+  &.ant-btn-default {
+    background-color: transparent;
+    border: 1px solid beige;
+    color: beige;
+
+    &:hover {
+      color: #bb3c3b !important;
+      background-color: transparent !important;
+      border: 1px solid beige !important;
+    }
+
+    &:disabled {
+      color: #bb3c3b;
+      background-color: rgba(245, 245, 220, 0.4);
+
+      &:hover {
+        color: #bb3c3b;
+        background-color: rgba(245, 245, 220, 0.4) !important;
+      }
+    }
+  }
+}
+
