@@ -1,6 +1,31 @@
-type Point = { x: number; y: number }
+import type {GeometryResult, NumericPoint} from "../types.ts";
 
-export const calculateSquareByPoints = (points: Point[]): { area: number; perimeter: number } => {
+//===>> Basic geometry formulas
+
+export const calculateSquare = (side: number): GeometryResult => {
+    const area = side * side;
+    const perimeter = 4 * side;
+
+    return { area, perimeter };
+};
+
+export const calculateRectangle = (sideA: number, sideB: number): GeometryResult => {
+    const area = sideA * sideB;
+    const perimeter = 2 * (sideA + sideB);
+
+    return { area, perimeter };
+};
+
+export const calculateCircle = (radius: number): GeometryResult => {
+    const area = Math.round(Math.PI * radius * radius);
+    const perimeter = Math.round(2 * Math.PI * radius);
+
+    return { area, perimeter };
+};
+
+
+// ===>> Formulas for coordinates
+export const calculateSquareByPoints = (points: NumericPoint[]): { area: number; perimeter: number } => {
     if (points.length !== 2) {
         return { area: 0, perimeter: 0 }
     }
@@ -16,7 +41,7 @@ export const calculateSquareByPoints = (points: Point[]): { area: number; perime
 }
 
 export const calculateRectangleByPoints = (
-    points: Point[]
+    points: NumericPoint[]
 ): { area: number; perimeter: number } => {
     if (points.length !== 2) {
         return { area: 0, perimeter: 0 }
@@ -33,11 +58,11 @@ export const calculateRectangleByPoints = (
 }
 
 export const calculateCircleByPoints = (
-    center: Point,
-    point: Point
+    center: NumericPoint,
+    edgePoint: NumericPoint
 ): { area: number; perimeter: number } => {
-    const dx = point.x - center.x
-    const dy = point.y - center.y
+    const dx = edgePoint.x - center.x
+    const dy = edgePoint.y - center.y
     const radius = Math.sqrt(dx * dx + dy * dy)
 
     const area = Math.PI * radius * radius

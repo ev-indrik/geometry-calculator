@@ -9,17 +9,9 @@ import circleImg from "../../../public/shapes/circle.svg";
 import closeImg from '../../../public/x.svg'
 import {Button} from "antd";
 import {useGeneralContext} from '../../context/context';
+import type {CardProps} from "../../types.ts";
 
-type Props = {
-    areaResult: number,
-    perimeterResult: number,
-    geometryTypeId: number,
-    timeStamp: string,
-    uuid?: string
-    isClosable?: boolean,
-}
-
-const CardItem: FC<Props> = ({areaResult, perimeterResult, geometryTypeId, timeStamp, uuid, isClosable = true}) => {
+const CardItem: FC<CardProps> = ({areaResult, perimeterResult, geometryTypeId, timeStamp, uuid, isClosable = true}) => {
 
     const {setCalculationResults, calculationResults} = useGeneralContext()
 
