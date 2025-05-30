@@ -9,16 +9,13 @@ import {
     calculateSquare,
     calculateSquareByPoints
 } from "./geometry-formulas.ts";
+import {toNumericPoints} from "./toNumericPoints.ts";
 
 
 export const getCalculationResult = (activeSelectorId: number, values: FormValues) => {
 
-    // const { side, sideA, sideB, point1, point2, radius, center, edgePoint } = values
-
     let areaNumber = 0
     let perimeterNumber = 0
-
-    // setCurrentDate(moment().toISOString())
 
     if (!values)
         return
@@ -43,24 +40,32 @@ export const getCalculationResult = (activeSelectorId: number, values: FormValue
             // )
             return
         } else {
-            const p1 = values.point1
-            const p2 = values.point2
 
-            const numericP1: NumericPoint = {
-                x: Number(p1.x),
-                y: Number(p1.y),
-            };
+            const points: NumericPoint[] = toNumericPoints(values.point1, values.point2);
 
-            const numericP2: NumericPoint = {
-                x: Number(p2.x),
-                y: Number(p2.y),
-            };
-
-            const points: NumericPoint[] = [numericP1, numericP2]
+            const [numericP1, numericP2] = points;
 
             const isSamePoint = numericP1.x === numericP2.x && numericP1.y === numericP2.y;
-            const isValidLine = !isSamePoint &&
-            (numericP1.x === numericP2.x || numericP1.y === numericP2.y);
+            const isValidLine = !isSamePoint && (numericP1.x === numericP2.x || numericP1.y === numericP2.y);
+
+            // const p1 = values.point1
+            // const p2 = values.point2
+            //
+            // const numericP1: NumericPoint = {
+            //     x: Number(p1.x),
+            //     y: Number(p1.y),
+            // };
+            //
+            // const numericP2: NumericPoint = {
+            //     x: Number(p2.x),
+            //     y: Number(p2.y),
+            // };
+            //
+            // const points: NumericPoint[] = [numericP1, numericP2]
+            //
+            // const isSamePoint = numericP1.x === numericP2.x && numericP1.y === numericP2.y;
+            // const isValidLine = !isSamePoint &&
+            // (numericP1.x === numericP2.x || numericP1.y === numericP2.y);
 
             if (!isValidLine) {
 
@@ -99,20 +104,9 @@ export const getCalculationResult = (activeSelectorId: number, values: FormValue
             // )
             return
         } else {
-            const p1 = values.point1
-            const p2 = values.point2
+            const points: NumericPoint[] = toNumericPoints(values.point1, values.point2);
 
-            const numericP1: NumericPoint = {
-                x: Number(p1.x),
-                y: Number(p1.y),
-            };
-
-            const numericP2: NumericPoint = {
-                x: Number(p2.x),
-                y: Number(p2.y),
-            };
-
-            const points: NumericPoint[] = [numericP1, numericP2]
+            const [numericP1, numericP2] = points;
 
             const isDiagonal = numericP1.x !== numericP2.x && numericP1.y !== numericP2.y;
 
@@ -166,15 +160,7 @@ export const getCalculationResult = (activeSelectorId: number, values: FormValue
                 values.edgePoint.x !== undefined &&
                 values.edgePoint.y !== undefined
             ) {
-                const numericCenter: NumericPoint = {
-                    x: Number(values.center.x),
-                    y: Number(values.center.y),
-                };
-
-                const numericEdgePoint: NumericPoint = {
-                    x: Number(values.edgePoint.x),
-                    y: Number(values.edgePoint.y),
-                };
+            const [numericCenter, numericEdgePoint] = toNumericPoints(values.center, values.edgePoint);
 
             if (numericCenter.x === numericEdgePoint.x && numericCenter.y === numericEdgePoint.y) {
                 alert('Center and point must not be the same')

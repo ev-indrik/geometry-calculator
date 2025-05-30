@@ -42,8 +42,6 @@ const CalculatingSection: FC = () => {
     const [form] = useForm()
 
     const [activeSelectorId, setActiveSelectorId] = useState(2)
-    // const [areaResult, setAreaResult] = useState<number>(0)
-    // const [perimeterResult, setPerimeterResult] = useState<number>(0)
     const [currentDate, setCurrentDate] = useState('')
     const [resultItem, setResultItem] = useState<ResultItem | null>(null)
 
@@ -65,150 +63,6 @@ const CalculatingSection: FC = () => {
         if (!resultItem) {
             throw new Error('Calculation result is undefined');
         }
-
-       //  let areaNumber = 0
-       //  let perimeterNumber = 0
-       //
-       //  setCurrentDate(moment().toISOString())
-       ////
-       //  if (activeSelectorId === 1) {
-       //
-       //      if (values.side) {
-       //          areaNumber = Math.pow(values.side, 2)
-       //          perimeterNumber = values.side * 4
-       //      } else if (!values?.point1?.y || !values?.point1?.x || !values?.point2?.x || !values?.point2?.x)
-       //      {
-       //          openNotificationWithIcon(
-       //              'warning',
-       //              'Wrong coordinates',
-       //              "Please insert the correct coordinates or side"
-       //          )
-       //          return
-       //      } else {
-       //          const p1 = values.point1
-       //          const p2 = values.point2
-       //
-       //          const points = [p1, p2]
-       //
-       //          const isValidLine = p1.x === p2.x || p1.y === p2.y
-       //          if (!isValidLine) {
-       //              openNotificationWithIcon(
-       //                  'warning',
-       //                  'Wrong coordinates',
-       //                  "Points must be aligned horizontally or vertically to form a square side"
-       //              )
-       //              return
-       //          }
-       //          const {area, perimeter} = calculateSquareByPoints(points)
-       //          areaNumber = area
-       //          perimeterNumber = perimeter
-       //      }
-       //  }
-       //
-       //  if (activeSelectorId === 2) {
-       //      if (values.sideA && values.sideB) {
-       //
-       //          const a = Number(values.sideA)
-       //          const b = Number(values.sideB)
-       //          areaNumber = a * b
-       //          perimeterNumber = 2 * (a + b)
-       //      } else if (!values?.point1?.y || !values?.point1?.x || !values?.point2?.x || !values?.point2?.x)
-       //      {
-       //          openNotificationWithIcon(
-       //              'warning',
-       //              'Wrong coordinates',
-       //              "Please insert the correct coordinates or sides"
-       //          )
-       //          return
-       //      } else {
-       //          const p1 = values.point1
-       //          const p2 = values.point2
-       //
-       //          const points = [p1, p2]
-       //
-       //          const isDiagonal = p1.x !== p2.x && p1.y !== p2.y
-       //          if (!isDiagonal) {
-       //              openNotificationWithIcon(
-       //                  'warning',
-       //                  'Wrong coordinates',
-       //                  'Points must form a diagonal of a rectangle'
-       //              )
-       //              return
-       //          }
-       //
-       //          const {area, perimeter} = calculateRectangleByPoints(points)
-       //          areaNumber = area
-       //          perimeterNumber = perimeter
-       //      }
-       //  }
-       //
-       //  if (activeSelectorId === 3) {
-       //
-       //      if (values.radius) {
-       //          const r = Number(values.radius);
-       //          if (r <= 0) {
-       //              openNotificationWithIcon(
-       //                  'warning',
-       //                  'Wrong radius',
-       //                  'Radius must be a positive number'
-       //              );
-       //              return;
-       //          }
-       //          areaNumber = Math.round(Math.PI * r * r);
-       //          perimeterNumber = Math.round(2 * Math.PI * r);
-       //          openNotificationWithIcon(
-       //              'success',
-       //              'Calculation successful',
-       //              'Note: The circle calculation results are rounded to the nearest whole number'
-       //          );
-       //      } else if (
-       //          values.center &&
-       //          values.edgePoint &&
-       //          values.center.x &&
-       //          values.center.y &&
-       //          values.edgePoint.x &&
-       //          values.edgePoint.y
-       //      ) {
-       //          const {x: cx, y: cy} = values.center;
-       //          const {x: px, y: py} = values.edgePoint;
-       //
-       //          if (cx === px && cy === py) {
-       //              openNotificationWithIcon(
-       //                  'warning',
-       //                  'Wrong coordinates',
-       //                  'Center and point must not be the same'
-       //              );
-       //              return;
-       //          }
-       //
-       //          const {area, perimeter} = calculateCircleByPoints(values.center, values.edgePoint);
-       //          areaNumber = Math.round(area);
-       //          perimeterNumber = Math.round(perimeter);
-       //          openNotificationWithIcon(
-       //              'success',
-       //              'Calculation successful',
-       //              'Note: The circle calculation results are rounded to the nearest whole number'
-       //          );
-       //      } else {
-       //          openNotificationWithIcon(
-       //              'warning',
-       //              'Missing data',
-       //              'Please provide valid center and edge point coordinates, or use the radius instead'
-       //          );
-       //          return;
-       //      }
-       //  }
-       //
-       //  // setAreaResult(areaNumber)
-       //  // setPerimeterResult(perimeterNumber)
-       //
-       //  const resultItem: ResultItem = {
-       //      uuid: uuidv4(),
-       //      geometryId: activeSelectorId,
-       //      area: areaNumber,
-       //      perimeter: perimeterNumber,
-       //      timeStamp: moment().toISOString(),
-       //  }
         setResultItem(resultItem)
         form.resetFields()
     }
@@ -234,7 +88,8 @@ const CalculatingSection: FC = () => {
         form.resetFields()
     }
 
-    return (<>
+    return (
+        <>
             {contextHolder}
 
             <Col
