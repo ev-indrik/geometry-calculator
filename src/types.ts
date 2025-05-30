@@ -39,4 +39,5 @@ export type CardProps = {
     geometryTypeId: number,
     isClosable?: boolean,
     timeStamp?: string,
+    block?: boolean,
 }

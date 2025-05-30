@@ -1,4 +1,4 @@
-import {type BaseSyntheticEvent, type ChangeEvent, type FC, useState} from 'react';
+import {type ChangeEvent, type FC, useState} from 'react';
 import {Button, Col, Divider, Form, Input, Row, Space, Typography} from "antd";
 
 import './CalculatingSection.scss'
@@ -84,11 +84,14 @@ const CalculatingSection: FC = () => {
     const onMetricChange = (e: ChangeEvent<HTMLInputElement>) => {
         setIsCoordsDisabled(!!e.target.value);
         form.resetFields([['point1', 'x'], ['point1', 'y'], ['point2', 'x'], ['point2', 'y']])
+        form.resetFields([['center', 'x'], ['center', 'y'], ['edgePoint', 'x'], ['edgePoint', 'y']])
     };
 
     const onCoordsChange = (e: ChangeEvent<HTMLInputElement>) => {
         setIsMetricDisabled(!!e.target.value);
         form.resetFields(['side'])
+        form.resetFields(['sideA', 'sideB'])
+        form.resetFields(['radius'])
     };
 
     return (
@@ -182,10 +185,10 @@ const CalculatingSection: FC = () => {
                             {activeSelectorId === 2 && (
                                 <>
                                     <Form.Item label={'Side A'} name={'sideA'}>
-                                        <Input type={'number'} placeholder={'Enter rectangular first side'}/>
+                                        <Input type={'number'} placeholder={'Enter rectangular first side'} onChange={onMetricChange} disabled={isMetricDisabled}/>
                                     </Form.Item>
                                     <Form.Item label={'Side B'} name={'sideB'}>
-                                        <Input type={'number'} placeholder={'Enter rectangular second side'}/>
+                                        <Input type={'number'} placeholder={'Enter rectangular second side'} onChange={onMetricChange} disabled={isMetricDisabled}/>
                                     </Form.Item>
 
                                     <Divider plain style={{borderColor: '#E84D4B'}}>
@@ -194,22 +197,22 @@ const CalculatingSection: FC = () => {
                                     <Row gutter={12}>
                                         <Col span={6}>
                                             <Form.Item label="X₁" name={['point1', 'x']}>
-                                                <Input type="number" placeholder="X₁"/>
+                                                <Input type="number" placeholder="X₁" disabled={isCoordsDisabled} onChange={onCoordsChange}/>
                                             </Form.Item>
                                         </Col>
                                         <Col span={6}>
                                             <Form.Item label="Y₁" name={['point1', 'y']}>
-                                                <Input type="number" placeholder="Y₁"/>
+                                                <Input type="number" placeholder="Y₁" disabled={isCoordsDisabled} onChange={onCoordsChange}/>
                                             </Form.Item>
                                         </Col>
                                         <Col span={6}>
                                             <Form.Item label="X₂" name={['point2', 'x']}>
-                                                <Input type="number" placeholder="X₂"/>
+                                                <Input type="number" placeholder="X₂" disabled={isCoordsDisabled} onChange={onCoordsChange}/>
                                             </Form.Item>
                                         </Col>
                                         <Col span={6}>
                                             <Form.Item label="Y₂" name={['point2', 'y']}>
-                                                <Input type="number" placeholder="Y₂"/>
+                                                <Input type="number" placeholder="Y₂" disabled={isCoordsDisabled} onChange={onCoordsChange}/>
                                             </Form.Item>
                                         </Col>
                                     </Row>
@@ -219,7 +222,7 @@ const CalculatingSection: FC = () => {
                             {activeSelectorId === 3 && (
                                 <>
                                     <Form.Item label={'Circle radius'} name={'radius'}>
-                                        <Input type={'number'} placeholder={'Enter radius here'}/>
+                                        <Input type={'number'} placeholder={'Enter radius here'} onChange={onMetricChange} disabled={isMetricDisabled}/>
                                     </Form.Item>
 
                                     <Divider plain style={{borderColor: '#E84D4B'}}>
@@ -229,22 +232,22 @@ const CalculatingSection: FC = () => {
                                     <Row gutter={12}>
                                         <Col span={6}>
                                             <Form.Item label="Center X" name={['center', 'x']}>
-                                                <Input type="number" placeholder="X"/>
+                                                <Input type="number" placeholder="X" disabled={isCoordsDisabled} onChange={onCoordsChange}/>
                                             </Form.Item>
                                         </Col>
                                         <Col span={6}>
                                             <Form.Item label="Center Y" name={['center', 'y']}>
-                                                <Input type="number" placeholder="Y"/>
+                                                <Input type="number" placeholder="Y" disabled={isCoordsDisabled} onChange={onCoordsChange}/>
                                             </Form.Item>
                                         </Col>
                                         <Col span={6}>
                                             <Form.Item label="Point X" name={['edgePoint', 'x']}>
-                                                <Input type="number" placeholder="X"/>
+                                                <Input type="number" placeholder="X" disabled={isCoordsDisabled} onChange={onCoordsChange}/>
                                             </Form.Item>
                                         </Col>
                                         <Col span={6}>
                                             <Form.Item label="Point Y" name={['edgePoint', 'y']}>
-                                                <Input type="number" placeholder="Y"/>
+                                                <Input type="number" placeholder="Y" disabled={isCoordsDisabled} onChange={onCoordsChange}/>
                                             </Form.Item>
                                         </Col>
                                     </Row>
@@ -257,6 +260,7 @@ const CalculatingSection: FC = () => {
                                     perimeterResult={resultItem?.perimeter}
                                     geometryTypeId={activeSelectorId}
                                     isClosable={false}
+                                    block={true}
                                 /> : null
                             }
 
