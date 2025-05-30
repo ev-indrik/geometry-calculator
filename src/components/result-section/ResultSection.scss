@@ -1,5 +1,7 @@
 .cards-section {
-    margin-left: 16px;
+  margin-left: 16px;
+  min-width: 280px;
+  border: 1px solid yellow;
 
   .cards-container {
     height: 80vh;

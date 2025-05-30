@@ -1,4 +1,4 @@
-import {type FC, useState} from 'react';
+import {type BaseSyntheticEvent, type ChangeEvent, type FC, useState} from 'react';
 import {Button, Col, Divider, Form, Input, Row, Space, Typography} from "antd";
 
 import './CalculatingSection.scss'
@@ -42,6 +42,9 @@ const CalculatingSection: FC = () => {
     const [activeSelectorId, setActiveSelectorId] = useState(2)
     const [resultItem, setResultItem] = useState<ResultItem | null>(null)
 
+    const [isMetricDisabled, setIsMetricDisabled] = useState(false)
+    const [isCoordsDisabled, setIsCoordsDisabled] = useState(false)
+
     const onFinish = (values: FormValues) => {
 
         const resultItem: ResultItem | undefined = getCalculationResult(activeSelectorId, values)
@@ -51,6 +54,8 @@ const CalculatingSection: FC = () => {
         }
         setResultItem(resultItem)
         form.resetFields()
+        setIsMetricDisabled(false)
+        setIsCoordsDisabled(false)
     }
 
     const handleSelector = (id: number) => {
@@ -64,6 +69,8 @@ const CalculatingSection: FC = () => {
         setResultItem(null)
         setCalculationResults([])
         form.resetFields()
+        setIsMetricDisabled(false)
+        setIsCoordsDisabled(false)
     }
 
     const handleSaveResult = () => {
@@ -74,10 +81,20 @@ const CalculatingSection: FC = () => {
         form.resetFields()
     }
 
+    const onMetricChange = (e: ChangeEvent<HTMLInputElement>) => {
+        setIsCoordsDisabled(!!e.target.value);
+        form.resetFields([['point1', 'x'], ['point1', 'y'], ['point2', 'x'], ['point2', 'y']])
+    };
+
+    const onCoordsChange = (e: ChangeEvent<HTMLInputElement>) => {
+        setIsMetricDisabled(!!e.target.value);
+        form.resetFields(['side'])
+    };
+
     return (
         <>
             <Col
-                span={16}
+                span={15}
                 className={'calculation-box common-panel'}
             >
                 <Row justify={'center'}>
@@ -89,7 +106,7 @@ const CalculatingSection: FC = () => {
                 </Row>
 
                 <Row justify={'center'}>
-                    <Col span={14}>
+                    <Col span={16}>
 
                         <Col span={24}>
                             <Row justify={'center'}>
@@ -128,7 +145,7 @@ const CalculatingSection: FC = () => {
                             {activeSelectorId === 1 && (
                                 <>
                                     <Form.Item label={'Square side'} name={'side'}>
-                                        <Input type={'number'} placeholder={'Enter square side'}/>
+                                        <Input type={'number'} placeholder={'Enter square side'} onChange={onMetricChange} disabled={isMetricDisabled}/>
                                     </Form.Item>
 
                                     <Divider plain style={{borderColor: '#E84D4B'}}>
@@ -137,12 +154,12 @@ const CalculatingSection: FC = () => {
                                     <Row gutter={12}>
                                         <Col span={12}>
                                             <Form.Item label={'Point X'} name={['point1', 'x']}>
-                                                <Input type={'number'} placeholder={'X coordinate'}/>
+                                                <Input type={'number'} placeholder={'X coordinate'} disabled={isCoordsDisabled} onChange={onCoordsChange}/>
                                             </Form.Item>
                                         </Col>
                                         <Col span={12}>
                                             <Form.Item label={'Point Y'} name={['point1', 'y']}>
-                                                <Input type={'number'} placeholder={'Y coordinate'}/>
+                                                <Input type={'number'} placeholder={'Y coordinate'} disabled={isCoordsDisabled} onChange={onCoordsChange}/>
                                             </Form.Item>
                                         </Col>
                                     </Row>
@@ -150,12 +167,12 @@ const CalculatingSection: FC = () => {
                                     <Row gutter={12}>
                                         <Col span={12}>
                                             <Form.Item label={'Point X'} name={['point2', 'x']}>
-                                                <Input type={'number'} placeholder={'X coordinate'}/>
+                                                <Input type={'number'} placeholder={'X coordinate'} disabled={isCoordsDisabled} onChange={onCoordsChange}/>
                                             </Form.Item>
                                         </Col>
                                         <Col span={12}>
                                             <Form.Item label={'Point Y'} name={['point2', 'y']}>
-                                                <Input type={'number'} placeholder={'Y coordinate'}/>
+                                                <Input type={'number'} placeholder={'Y coordinate'} disabled={isCoordsDisabled} onChange={onCoordsChange}/>
                                             </Form.Item>
                                         </Col>
                                     </Row>
