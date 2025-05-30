@@ -29,3 +29,14 @@ export type GeometryResult = {
     area: number;
     perimeter: number;
 };
+
+export type NotificationType = 'success' | 'info' | 'warning' | 'error';
+
+export type CardProps = {
+    uuid?: string
+    areaResult: number,
+    perimeterResult: number,
+    geometryTypeId: number,
+    isClosable?: boolean,
+    timeStamp?: string,
+}

@@ -1,5 +1,5 @@
 import {type FC, useState} from 'react';
-import {Button, Col, Divider, Form, Input, notification, Row, Space, Typography} from "antd";
+import {Button, Col, Divider, Form, Input, Row, Space, Typography} from "antd";
 
 import './CalculatingSection.scss'
 
@@ -9,12 +9,10 @@ import circleImg from "../../../public/shapes/circle.svg";
 import CardItem from "../card-item/CardItem.tsx";
 import {useForm} from "antd/es/form/Form";
 import {type ResultItem, useGeneralContext} from "../../context/context.tsx";
-import {getCalculationResult} from "../../utils/getCalculationResult.ts";
 import type {FormValues, GeometryShapesProps} from '../../types.ts';
+import {useGetCalculationResult} from "../../hooks/useGetCalculationResult.tsx";
 
 const {Paragraph} = Typography;
-
-type NotificationType = 'success' | 'info' | 'warning' | 'error';
 
 const geometryShapes: GeometryShapesProps[] = [
     {
@@ -37,24 +35,12 @@ const geometryShapes: GeometryShapesProps[] = [
 const CalculatingSection: FC = () => {
 
     const {setCalculationResults, calculationResults} = useGeneralContext()
-    const [api, contextHolder] = notification.useNotification();
 
     const [form] = useForm()
+    const {getCalculationResult}=useGetCalculationResult()
 
     const [activeSelectorId, setActiveSelectorId] = useState(2)
-    const [currentDate, setCurrentDate] = useState('')
     const [resultItem, setResultItem] = useState<ResultItem | null>(null)
-
-    const openNotificationWithIcon = (
-        type: NotificationType,
-        message: string,
-        description: string
-    ) => {
-        api[type]({
-            message,
-            description,
-        });
-    };
 
     const onFinish = (values: FormValues) => {
 
@@ -90,8 +76,6 @@ const CalculatingSection: FC = () => {
 
     return (
         <>
-            {contextHolder}
-
             <Col
                 span={16}
                 className={'calculation-box common-panel'}
@@ -255,7 +239,6 @@ const CalculatingSection: FC = () => {
                                     areaResult={resultItem?.area}
                                     perimeterResult={resultItem?.perimeter}
                                     geometryTypeId={activeSelectorId}
-                                    timeStamp={currentDate}
                                     isClosable={false}
                                 /> : null
                             }
