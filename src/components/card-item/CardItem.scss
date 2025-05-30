@@ -1,5 +1,6 @@
 .card-item {
   position: relative;
+  max-width: 250px;
   height: 80px;
   display: flex;
   align-items: center;
@@ -8,6 +9,10 @@
   border: 1px solid #8C8C8C;
   border-radius: 8px;
   padding: 10px 16px;
+
+  &.block {
+    max-width: unset;
+  }
 
   .close-button {
     position: absolute;

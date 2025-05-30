@@ -11,7 +11,7 @@ import {Button} from "antd";
 import {useGeneralContext} from '../../context/context';
 import type {CardProps} from "../../types.ts";
 
-const CardItem: FC<CardProps> = ({areaResult, perimeterResult, geometryTypeId, timeStamp, uuid, isClosable = true}) => {
+const CardItem: FC<CardProps> = ({areaResult, perimeterResult, geometryTypeId, timeStamp, uuid, isClosable = true, block}) => {
 
     const {setCalculationResults, calculationResults} = useGeneralContext()
 
@@ -46,7 +46,7 @@ const CardItem: FC<CardProps> = ({areaResult, perimeterResult, geometryTypeId, t
     }
 
     return (
-        <div className={'card-item'}>
+        <div className={block ? 'card-item block' : 'card-item'}>
 
             {isClosable && (
                 <Button type={'text'} className={'close-button'} onClick={handleClose}>
