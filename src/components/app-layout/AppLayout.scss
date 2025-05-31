@@ -1,58 +1,75 @@
+@import '../../breakpoints';
+
 .app-wrapper {
-    min-height: 100vh;
-    height: auto;
-    width: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background-image: url('../../assets/bg-image.webp');
-    background-size: cover;
-    background-position: center;
-    background-repeat: repeat-y;
-    //background-repeat: no-repeat;
+  min-height: 100vh;
+  height: auto;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-image: url('../../assets/bg-image.webp');
+  background-size: cover;
+  background-position: center;
+  background-repeat: repeat-y;
+  //background-repeat: no-repeat;
 
-    .container {
-        width: 80vw;
-        height: 100%;
-        padding: 24px 0;
+  .container {
+    width: 80vw;
+    height: 100%;
+    padding: 24px 0;
 
-        .calc-wrapper {
-            height: 100%;
-        }
-
-        .header-box {
-            padding: 0 42px 0;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
-            box-shadow: 0 4px 4px -4px rgba(255, 255, 255, 0.4);
-        }
-
-        .common-panel {
-            min-height: 80vh;
-            border: 1px solid #FFFFFF40;
-            border-radius: 6px;
-            padding: 16px;
-            background-color: rgba(255, 255, 255, 0.16);
-            box-shadow: 0 0 8px rgba(255, 255, 255, 0.4);
-        }
+    @include respond-to-down(lg){
+      width: 90vw;
     }
 
-    h1 {
-        color: #E84D4B;
-        font-weight: 700;
-        font-size: 38px;
-        margin: 0;
-        padding: 0;
+    @include respond-to-down(md) {
+      width: 100vw;
+      padding: 8px 0;
     }
 
-    h2 {
-        color: beige;
-        font-weight: 700;
-        font-size: 26px;
-        margin: 10px 0 10px;
+    @include respond-to-down(sm) {
+      width: 98vw;
     }
 
-    p {
-        margin: 0;
+    .calc-wrapper {
+      height: 100%;
     }
+
+    .header-box {
+      padding: 0 42px 0;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+      box-shadow: 0 4px 4px -4px rgba(255, 255, 255, 0.4);
+    }
+
+    .common-panel {
+      min-height: 80vh;
+      border: 1px solid #FFFFFF40;
+      border-radius: 6px;
+      padding: 16px;
+      background-color: rgba(255, 255, 255, 0.16);
+      box-shadow: 0 0 8px rgba(255, 255, 255, 0.4);
+
+      @include respond-to-down(lg) {
+        padding: 16px;
+      }
+
+      @include respond-to-down(md) {
+        padding: 8px;
+      }
+
+      @include respond-to-down(sm) {
+        min-height: unset;
+      }
+    }
+  }
+
+  h2 {
+    text-align: center;
+    color: #E84D4B;
+  }
+
+  p {
+    margin: 0;
+  }
 }
 

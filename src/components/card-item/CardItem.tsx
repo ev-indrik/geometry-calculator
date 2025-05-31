@@ -7,9 +7,11 @@ import squareImg from "../../../public/shapes/square.svg";
 import rectangleImg from "../../../public/shapes/rectangle.svg";
 import circleImg from "../../../public/shapes/circle.svg";
 import closeImg from '../../../public/x.svg'
-import {Button} from "antd";
+import {Button, Tooltip, Typography} from "antd";
 import {useGeneralContext} from '../../context/context';
 import type {CardProps} from "../../types.ts";
+
+const {Paragraph} = Typography
 
 const CardItem: FC<CardProps> = ({areaResult, perimeterResult, geometryTypeId, timeStamp, uuid, isClosable = true, block}) => {
 
@@ -62,7 +64,14 @@ const CardItem: FC<CardProps> = ({areaResult, perimeterResult, geometryTypeId, t
                     {cardName}
                 </div>
                 <div className={'result-text'}>
-                    <p>{`Area: ${areaResult}² / Perimeter: ${perimeterResult}`}</p>
+                    <Tooltip title={(areaResult && areaResult?.toString()?.length > 6) ? `Area: ${areaResult}² / Perimeter: ${perimeterResult}` : ''}>
+                        <Paragraph
+                            style={{marginBottom:0, maxWidth: 180}}
+                            ellipsis={{rows: 1}}
+                        >
+                            {`Area: ${areaResult}² / Perimeter: ${perimeterResult}`}
+                        </Paragraph>
+                    </Tooltip>
                 </div>
                 <div className={'time-stamp'}>
                     {`Date: ${formattedData}`}

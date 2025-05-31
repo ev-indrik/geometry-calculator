@@ -1,0 +1,48 @@
+//===>> Breakpoint values
+
+$screen-xxs: 280px;
+$screen-xs: 480px;
+$screen-sm: 576px;
+$screen-md: 768px;
+$screen-lg: 992px;
+$screen-xl: 1200px;
+$screen-xxl: 1600px;
+
+// ===>> Range of breakpoints
+$breakpoint-ranges: (
+        xxs: (min: $screen-xxs, max: $screen-xs - 1),
+        xs:  (min: $screen-xs, max: $screen-sm - 1),
+        sm:  (min: $screen-sm, max: $screen-md - 1),
+        md:  (min: $screen-md, max: $screen-lg - 1),
+        lg:  (min: $screen-lg, max: $screen-xl - 1),
+        xl:  (min: $screen-xl, max: $screen-xxl - 1),
+        xxl: (min: $screen-xxl)
+);
+
+//===>> Mixins to down
+@mixin respond-to-down($breakpoint) {
+  @if map-has-key($breakpoint-ranges, $breakpoint) {
+    $max: map-get(map-get($breakpoint-ranges, $breakpoint), max);
+
+    @if $max {
+      @media (max-width: $max) {
+        @content;
+      }
+    } @else {
+      @warn "Breakpoint '#{$breakpoint}' has no max-width (probably it's the largest one).";
+    }
+  } @else {
+    @warn "Unknown breakpoint: '#{$breakpoint}'";
+  }
+}
+
+/* ===>>> sample of usage
+.card {
+  padding: 24px;
+
+  @include respond-to-down(md) {
+    padding: 12px;
+    background-color: #fff0f0;
+  }
+}
+*/

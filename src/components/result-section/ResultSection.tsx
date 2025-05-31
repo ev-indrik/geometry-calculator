@@ -1,9 +1,11 @@
 import {type FC} from 'react';
-import {Col, Row, Space} from "antd";
+import {Col, Row, Space, Typography} from "antd";
 import CardItem from "../card-item/CardItem.tsx";
 
 import './ResultSection.scss'
 import {useGeneralContext} from "../../context/context.tsx";
+
+const {Title} = Typography;
 
 const ResultSection: FC = () => {
 
@@ -11,13 +13,13 @@ const ResultSection: FC = () => {
 
     return (
         <Col
+            xxl={8} xl={8} lg={8} md={8} sm={20} xs={23}
             className={'cards-section common-panel'}
-            // span={8}
         >
             <Row justify={'center'}>
                 <Col>
                     <div className={'header-box'}>
-                        <h2>{'My results'}</h2>
+                        <Title level={2}>{'My results'}</Title>
                     </div>
                 </Col>
             </Row>

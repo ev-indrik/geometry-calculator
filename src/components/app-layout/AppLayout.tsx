@@ -1,5 +1,5 @@
 import './AppLayout.scss'
-import {ConfigProvider, Row} from "antd";
+import {Col, ConfigProvider, Row} from "antd";
 
 import CalculatingSection from "../calculation-section/CalculatingSection.tsx";
 import ResultSection from "../result-section/ResultSection.tsx";
@@ -25,8 +25,8 @@ function AppLayout() {
                     <div className={'app-wrapper'}>
                         <div className={'container'}>
                             <Row justify={'center'} className={'calc-wrapper'}>
-                                <CalculatingSection/>
-                                <ResultSection/>
+                                    <CalculatingSection/>
+                                    <ResultSection/>
                             </Row>
                         </div>
                     </div>
