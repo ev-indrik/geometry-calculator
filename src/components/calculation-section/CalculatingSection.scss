@@ -1,3 +1,5 @@
+@import '../../breakpoints';
+
 .calculation-box {
 
   .geometry-selector {
@@ -16,6 +18,11 @@
       width: 34px;
       height: 34px;
       margin-top: 10px;
+
+      @include respond-to-down(sm) {
+        width: 28px;
+        height: 28px;
+      }
 
       img {
         width: 100%;

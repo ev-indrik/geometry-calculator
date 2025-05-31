@@ -12,7 +12,7 @@ import {type ResultItem, useGeneralContext} from "../../context/context.tsx";
 import type {FormValues, GeometryShapesProps} from '../../types.ts';
 import {useGetCalculationResult} from "../../hooks/useGetCalculationResult.tsx";
 
-const {Paragraph} = Typography;
+const {Paragraph, Title} = Typography;
 
 const geometryShapes: GeometryShapesProps[] = [
     {
@@ -46,7 +46,6 @@ const CalculatingSection: FC = () => {
     const [isCoordsDisabled, setIsCoordsDisabled] = useState(false)
 
     const onFinish = (values: FormValues) => {
-
         const resultItem: ResultItem | undefined = getCalculationResult(activeSelectorId, values)
 
         if (!resultItem) {
@@ -97,19 +96,21 @@ const CalculatingSection: FC = () => {
     return (
         <>
             <Col
-                span={15}
+                xxl={15} xl={15} lg={15} md={14} sm={20} xs={23}
                 className={'calculation-box common-panel'}
             >
                 <Row justify={'center'}>
                     <Col>
                         <div className={'header-box'}>
-                            <h1>{'Geometry calculator'}</h1>
+                            <Title level={2}>{'Geometry calculator'}</Title>
                         </div>
                     </Col>
                 </Row>
 
                 <Row justify={'center'}>
-                    <Col span={16}>
+                    <Col
+                        xxl={16} xl={16} lg={18} md={18} sm={24} xs={24}
+                    >
 
                         <Col span={24}>
                             <Row justify={'center'}>
