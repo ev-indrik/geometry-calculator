@@ -9,6 +9,8 @@ export const theme: ThemeConfig = {
         Button: {
             colorPrimary: '#E84D4B',
             algorithm: true,
+            colorTextDisabled: 'beige',
+            colorBgContainerDisabled: 'darkgray',
         },
         Input: {
             colorPrimary: '#E84D4B',
